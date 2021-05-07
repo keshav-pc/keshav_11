@@ -1,35 +1,36 @@
+import numpy as np
 import cv2
-import sys
 
-cascPath = sys.argv[1]
-faceCascade = cv2.CascadeClassifier(cascPath)
 
-video_capture = cv2.VideoCapture(0)
+faceCascade = cv2.CascadeClassifier('Cascades/haarcascade_frontalface_default.xml')
 
-while True:
-    # Capture frame-by-frame
-    ret, frame = video_capture.read()
+cap = cv2.VideoCapture(0)
+cap.set(3, 640)  # set Width
+cap.set(4, 480)  # set Height
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-
+while (True):
+    ret, img = cap.read()
+    img = cv2.flip(img, -1)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     faces = faceCascade.detectMultiScale(
         gray,
-        scaleFactor=1.1,
-        minNeighbors=5,
-        minSize=(30, 30),
-        flags=cv2.cv.CV_HAAR_SCALE_IMAGE
+
+        scaleFactor=1.2,
+        minNeighbors=5
+        ,
+        minSize=(20, 20)
     )
 
-    # Draw a rectangle around the faces
     for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 2)
+        roi_gray = gray[y:y + h, x:x + w]
+        roi_color = img[y:y + h, x:x + w]
 
-    # Display the resulting frame
-    cv2.imshow('Video', frame)
+    cv2.imshow('video', img)
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    k = cv2.waitKey(3) & 0xff
+    if k == 27:  # press 'ESC' to quit
         break
 
-# When everything is done, release the capture
-video_capture.release()
+cap.release()
 cv2.destroyAllWindows()
