@@ -1,5 +1,0 @@
-CREATE TABLE student(
-   stud_id INT(25) NOT NULL,
-   name VARCHAR (20) NOT NULL,
-   course VARCHAR (55)NOT NULL,
-);

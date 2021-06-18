@@ -1,5 +1,0 @@
-CREATE TABLE department(
-    dept_name VARHCHAR(225) NOT NULL,
-    stud_id INT,
-     FOREIGN KEY (stud_ID) REFERENCES student(stud_ID)
-);
